@@ -1,9 +1,9 @@
-get_aq_ts_ids <- function(site_id, param) {
+get_aq_ts_ids <- function(site_id, param, host) {
   desc <- GetTimeSeriesDescriptionList(LocationIdentifier = site_id,
                                        Parameter = param,
                                        Publish = TRUE,
                                        ComputationIdentifier = "Instantaneous",
-                                       host = 'tsqa.nwis.usgs.gov')
+                                       host = host)
   uniqueId <- desc$TimeSeriesDescriptions$UniqueId
   assert_that(length(uniqueId) == 1) #could grep for "primary" if >1?
   extended_attributes <- desc$TimeSeriesDescriptions$ExtendedAttributes

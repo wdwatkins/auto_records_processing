@@ -19,15 +19,22 @@ raw_timeseries <- GetTimeSeriesRawData(TimeSeriesUniqueId = timeseries_info$uniq
                                        host = aquarius_host)
 raw_data <- raw_timeseries$Points %>% 
   mutate(datetime_parsed = parse_date_time(Timestamp, orders = 'Y m d H M OSz', 
-#TODO: get corrected from AQ?  
-                                           
-                                                                                      tz = 'America/New_York'))
+                                           tz = 'America/New_York'))
+#get corrected from AQ
+aq_corr_timeseries <- GetTimeSeriesCorrectedData(TimeSeriesUniqueId = timeseries_info$unique_id,
+                                           host = aquarius_host) 
+aq_corr_data <- aq_corr_timeseries$Points %>% 
+  mutate(datetime_parsed = parse_date_time(Timestamp, orders = 'Y m d H M OSz', 
+                                           tz = 'America/New_York')) %>% 
+  rename(value_aq_cor = Value)
+
+
 #grab appropriate data bundle
 #bundles are stored by state..
 site_info <- readNWISsite(site)
 site_state <- stateCdLookup(site_info$state_cd) 
 site_title_state <- tolower(str_sub(site_info$station_nm, start = -2, end = -1))
-#TODO: trycatch and try state in site title, if doesn't work
+#trycatch and try state in site title, if doesn't work
 bundle_zip <- tryCatch(download_adaps_site_bundle(site = site, bundle_wsc = site_state),
                        error = function(e) {
                          message("State from site service didn't work, attempting state in name")
@@ -44,25 +51,33 @@ bundle_edit_file_path <- file.path(tools::file_path_sans_ext(bundle_zip),
 bundle_meas_file_path <- file.path(tools::file_path_sans_ext(bundle_zip),
           paste("UV.db01.USGS", site, 
                 formatted_adaps_dd, "meas.S", "rdb", sep = ".")) 
+bundle_corr_file_path <- file.path(tools::file_path_sans_ext(bundle_zip),
+                                   paste("UV.db01.USGS", site, 
+                                   formatted_adaps_dd, "corr", "rdb", sep = "."))
 parsed_bundle_df <- parse_bundle_rdb(bundle_edit_file_path) %>% 
   rename(adaps_edit_value = VALUE)
 
 parsed_bundle_df_meas <- parse_bundle_rdb(bundle_meas_file_path) %>% 
   rename(adaps_meas_value = VALUE)
+parsed_bundle_df_corr <- parse_bundle_rdb(bundle_meas_file_path) %>% 
+  rename(adaps_corr_value = VALUE)
 
 #join
 joined_raw_corrected <- left_join(raw_data, parsed_bundle_df, 
-                                  by = "datetime_parsed")
-sum(joined_raw_corrected$Value != joined_raw_corrected$adaps_edit_value, na.rm = TRUE)
-diff_df <- slice(joined_raw_corrected, which(joined_raw_corrected$Value != joined_raw_corrected$adaps_edit_value)) %>% 
-  mutate(diff = Value - adaps_edit_value)
-summary(diff_df$diff)
+                                  by = "datetime_parsed") %>% 
+  mutate(diff = abs(Value - adaps_edit_value)) %>% 
+  filter(datetime_parsed > '2007-01-01')
+sum(joined_raw_corrected$Value != joined_raw_corrected$adaps_edit_value, na.rm = TRUE) 
+diff_df <- slice(joined_raw_corrected, which(joined_raw_corrected$Value != joined_raw_corrected$adaps_edit_value)) 
+message("Difference between raw and ADAPs edit")
+summary(joined_raw_corrected$diff)
 
-joined_meas_edit <- joined_raw_corrected <- left_join(parsed_bundle_df_meas, parsed_bundle_df, 
-                                                      by = "datetime_parsed")
-diff_df_meas <- slice(joined_meas_edit, which(joined_meas_edit$Value != joined_meas_edit$adaps_edit_value)) %>% 
-  mutate(diff = adaps_meas_value - adaps_edit_value) 
-summary(diff_df_meas$diff)
+joined_meas_edit <- left_join(parsed_bundle_df_meas, parsed_bundle_df, 
+                                                      by = "datetime_parsed") %>% 
+  mutate(diff = abs(adaps_meas_value - adaps_edit_value)) 
+diff_df_meas <- slice(joined_meas_edit, which(joined_meas_edit$Value != joined_meas_edit$adaps_edit_value))
+message("Difference between ADAPS measured and edit")
+summary(joined_meas_edit$diff)
 
 nwis_data <- readNWISdata(site = site, parameterCd = param_nwis, service = "iv",
                           startDate = "1990-01-01", endDate = "2020-01-01",
@@ -70,3 +85,13 @@ nwis_data <- readNWISdata(site = site, parameterCd = param_nwis, service = "iv",
 joined_nwis_raw <- left_join(raw_data, nwis_data, by = c(datetime_parsed = "dateTime"))
 plot(x = joined_nwis_raw$datetime_parsed[378293:378993], y= joined_nwis_raw$Value[378293:378993, 1], ylim = c(5, 16))
 lines(x = joined_nwis_raw$datetime_parsed[378293:378993], y= joined_nwis_raw$X_00065_00000[378293:378993])
+
+aq_raw_corr <- full_join(raw_data, aq_corr_data, by = "datetime_parsed") %>% 
+  mutate(diff = abs(value_aq_cor - Value))
+message("Difference between AQ corrected and raw")
+summary(aq_raw_corr$diff)
+
+joined_corr_raw <- left_join(raw_data, parsed_bundle_df_corr, by = "datetime_parsed") %>% 
+  mutate(diff = abs(Value - adaps_corr_value))
+message("Difference between ADAPs corrected and raw")
+summary(joined_corr_raw$diff)

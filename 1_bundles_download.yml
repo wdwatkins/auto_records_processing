@@ -1,0 +1,39 @@
+# Do not edit - automatically generated
+# from the task_makefile.mustache template
+# by create_task_makefile() via download_data_bundles()
+# using scipiper package version 0.0.21
+
+target_default: 1_bundles_download
+
+packages:
+  - dataRetrieval
+
+sources:
+  - R/utilities.R
+  - R/pipeline_functions.R
+
+file_extensions:
+  - "ind"
+
+targets:
+  1_bundles_download:
+    depends:
+      - bundle_inventory_promise
+
+  # --- 01425000 --- #
+  
+  1_fetch/zip/bundle_01425000.zip:
+    command: get_bundle_trycatch(outfile = target_name, site = I('01425000'))
+
+  # --- 01432160 --- #
+  
+  1_fetch/zip/bundle_01432160.zip:
+    command: get_bundle_trycatch(outfile = target_name, site = I('01432160'))
+
+  # --- Overall job --- #
+
+  bundle_inventory_promise:
+    command: get_bundle_inventory(
+      '1_fetch/zip/bundle_01425000.zip',
+      '1_fetch/zip/bundle_01432160.zip')
+    

@@ -1,0 +1,29 @@
+packages:
+ - tidyverse
+ - assertthat
+ - aqapi
+ - dataRetrieval
+ - utc2nwislocal
+ - lubridate
+ 
+sources:
+ - R/utilities.R
+ - R/pipeline_functions.R
+ 
+targets:
+  sites_parameters:
+    command: read_tsv('1_fetch/in/sites_params.csv')
+    
+  data_bundles:
+    command: download_data_bundles(sites_parameters, 'R/utilities.R', 'R/pipeline_functions.R')
+                          
+  #download raw, join, QC
+  aquarius_raw_data:
+    command: do_aquarius_downloads(sites_parameters, host = I('tsqa-api.nwis.usgs.gov'),
+                                  'R/utilities.R', 'R/pipeline_functions.R')
+  
+  joined_data_summary:
+    command: assemble_summarize_data_tasks(sites_parameters = sites_parameters, 
+                                           aquarius_data = aquarius_raw_data,
+                                           data_bundles = data_bundles,
+                                           'R/utilities.R', 'R/pipeline_functions.R')

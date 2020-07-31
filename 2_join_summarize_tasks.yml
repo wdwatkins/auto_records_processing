@@ -1,0 +1,61 @@
+# Do not edit - automatically generated
+# from the task_makefile.mustache template
+# by create_task_makefile() via assemble_summarize_data_tasks()
+# using scipiper package version 0.0.21
+
+target_default: 2_join_summarize_tasks
+
+include:
+  - remake.yml
+  - 1_aquarius_download.yml
+  - 1_bundles_download.yml
+
+packages:
+  - tidyverse
+  - lubridate
+
+sources:
+  - R/utilities.R
+  - R/pipeline_functions.R
+
+file_extensions:
+  - "ind"
+
+targets:
+  2_join_summarize_tasks:
+    depends:
+      - all_summaries_promise
+
+  # --- 01425000_Temperature, water --- #
+  
+  2_process/out/joined_data_01425000_Temperature, water.rds:
+    command: read_bundle_join_data(outfile = target_name, site = I('01425000'),
+      bundle = '1_fetch/zip/bundle_01425000.zip',
+      timeseries_info = `timeseries_info_01425000_Temperature, water`,
+      aquarius_data = '1_fetch/out/aquarius_download_01425000_Temperature, water.rds', col_to_trim = I('value_adaps_edit'))
+
+  2_process/out/summary_01425000_Temperature, water.rds:
+    command: summarize_joined_data(outfile = target_name,
+               joined_data_file = '2_process/out/joined_data_01425000_Temperature, water.rds')
+
+  # --- 01432160_Temperature, water --- #
+  
+  2_process/out/joined_data_01432160_Temperature, water.rds:
+    command: read_bundle_join_data(outfile = target_name, site = I('01432160'),
+      bundle = '1_fetch/zip/bundle_01432160.zip',
+      timeseries_info = `timeseries_info_01432160_Temperature, water`,
+      aquarius_data = '1_fetch/out/aquarius_download_01432160_Temperature, water.rds', col_to_trim = I('value_adaps_edit'))
+
+  2_process/out/summary_01432160_Temperature, water.rds:
+    command: summarize_joined_data(outfile = target_name,
+               joined_data_file = '2_process/out/joined_data_01432160_Temperature, water.rds')
+
+  # --- Overall job --- #
+
+  all_summaries_promise:
+    command: combine_summaries(
+      '2_process/out/joined_data_01425000_Temperature, water.rds',
+      '2_process/out/summary_01425000_Temperature, water.rds',
+      '2_process/out/joined_data_01432160_Temperature, water.rds',
+      '2_process/out/summary_01432160_Temperature, water.rds')
+    

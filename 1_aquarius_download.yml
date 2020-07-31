@@ -1,0 +1,60 @@
+# Do not edit - automatically generated
+# from the task_makefile.mustache template
+# by create_task_makefile() via do_aquarius_downloads()
+# using scipiper package version 0.0.21
+
+target_default: 1_aquarius_download
+
+packages:
+  - tidyverse
+  - lubridate
+  - utc2nwislocal
+  - aqapi
+
+sources:
+  - R/utilities.R
+  - R/pipeline_functions.R
+
+file_extensions:
+  - "ind"
+
+targets:
+  1_aquarius_download:
+    depends:
+      - aq_inventory_promise
+
+  # --- 01425000_Temperature, water --- #
+  
+  timeseries_info_01425000_Temperature, water:
+    command: get_aq_ts_ids(site = I('01425000'),
+      param = I('Temperature, water'),
+      host = I('tsqa-api.nwis.usgs.gov'))
+
+  1_fetch/out/aquarius_download_01425000_Temperature, water.rds:
+    command: download_aquarius_raw_data(outfile = target_name, site = I('01425000'),
+      parameter = I('Temperature, water'),
+      timeseries_info = `timeseries_info_01425000_Temperature, water`,
+      host = I('tsqa-api.nwis.usgs.gov'))
+
+  # --- 01432160_Temperature, water --- #
+  
+  timeseries_info_01432160_Temperature, water:
+    command: get_aq_ts_ids(site = I('01432160'),
+      param = I('Temperature, water'),
+      host = I('tsqa-api.nwis.usgs.gov'))
+
+  1_fetch/out/aquarius_download_01432160_Temperature, water.rds:
+    command: download_aquarius_raw_data(outfile = target_name, site = I('01432160'),
+      parameter = I('Temperature, water'),
+      timeseries_info = `timeseries_info_01432160_Temperature, water`,
+      host = I('tsqa-api.nwis.usgs.gov'))
+
+  # --- Overall job --- #
+
+  aq_inventory_promise:
+    command: get_aq_inventory(
+      `timeseries_info_01425000_Temperature, water`,
+      '1_fetch/out/aquarius_download_01425000_Temperature, water.rds',
+      `timeseries_info_01432160_Temperature, water`,
+      '1_fetch/out/aquarius_download_01432160_Temperature, water.rds')
+    

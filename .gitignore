@@ -3,3 +3,5 @@
 .RData
 .Ruserdata
 bundles/*
+2_process/out/*rds
+2_process/out/*html

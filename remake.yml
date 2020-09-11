@@ -5,14 +5,21 @@ packages:
  - dataRetrieval
  - utc2nwislocal
  - lubridate
+ - dygraphs
+ - htmlwidgets
+ - xts
  
 sources:
  - R/utilities.R
  - R/pipeline_functions.R
  
 targets:
+
   sites_parameters:
-    command: read_tsv('1_fetch/in/sites_params.csv')
+    command: get_site_sample(states = I(c('CA', 'PA')),
+                             pcodes = I(c('00010', '00065')),
+                             aq_file_name = I('pcode_translation.json'),
+                             sample_size = I(50))
     
   data_bundles:
     command: download_data_bundles(sites_parameters, 'R/utilities.R', 'R/pipeline_functions.R')
@@ -26,4 +33,5 @@ targets:
     command: assemble_summarize_data_tasks(sites_parameters = sites_parameters, 
                                            aquarius_data = aquarius_raw_data,
                                            data_bundles = data_bundles,
-                                           'R/utilities.R', 'R/pipeline_functions.R')
+                                           'R/utilities.R', 'R/pipeline_functions.R', 
+                                           'R/summary_plots.R')

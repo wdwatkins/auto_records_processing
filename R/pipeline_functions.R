@@ -161,9 +161,27 @@ assemble_summarize_data_tasks <- function(sites_parameters, aquarius_data, data_
     }
   )
   
+  dygraph_step  <- create_task_step(
+    step_name = 'dygraph_step',
+    target_name = function(task_name, ...) {
+      sprintf('2_process/out/dygraph_%s.html', task_name)
+    },
+    command = function(task_name, steps, ...) {
+      site <- strsplit(task_name, split = '_')[[1]][1]
+      parameter <- strsplit(task_name, split = '_')[[1]][2]
+      psprintf("dygraph_edited_raw(outfile = target_name,
+               joined_data_file = '%s'," = 
+                 steps[['read_bundle_join_data']]$target_name,
+               "summary_file = '%s'," = steps[['summarize_joined_data_step']]$target_name,
+               "site_no = I('%s')," = site,
+               "parameter = I('%s'))" = parameter)
+    }
+  )
+  
   task_plan <- create_task_plan(
     task_names = task_names,
-    task_steps = list(read_bundle_join_data_step, summarize_joined_data_step),
+    task_steps = list(read_bundle_join_data_step, summarize_joined_data_step,
+                      dygraph_step),
     add_complete = FALSE)
   
   create_task_makefile(
@@ -171,12 +189,12 @@ assemble_summarize_data_tasks <- function(sites_parameters, aquarius_data, data_
     makefile = "2_join_summarize_tasks.yml",
     include = c("remake.yml", "1_aquarius_download.yml", "1_bundles_download.yml"),
     sources = c(...),
-    packages = c('tidyverse', 'lubridate'),
+    packages = c('tidyverse', 'lubridate', 'magrittr', 'dygraphs', 'xts', 'htmlwidgets'),
     final_targets = 'all_summaries',
     finalize_funs = 'combine_summaries')
   
   loop_tasks(task_plan = task_plan, task_makefile = '2_join_summarize_tasks.yml',
-             num_tries = 1)
+             num_tries = 1, n_cores = 1)
   #assemble all summaries into list
   return(remake::fetch('all_summaries_promise', remake_file = "2_join_summarize_tasks.yml"))
 }

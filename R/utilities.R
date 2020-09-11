@@ -5,9 +5,18 @@ get_aq_ts_ids <- function(site_id, param, host) {
                                        Publish = TRUE,
                                        ComputationIdentifier = "Instantaneous",
                                        host = host)
-  uniqueId <- desc$TimeSeriesDescriptions$UniqueId
+  ts_description_row <- desc$TimeSeriesDescriptions %>% 
+    filter(CorrectedStartTime < '2007-10-01 00:00:00',
+           CorrectedEndTime > '2017-10-01 00:00:00') %>% 
+    slice_min(CorrectedStartTime)
+  if(nrow(ts_description_row) > 1) {
+    ts_description_row <- ts_description_row %>% 
+      filter(grepl(pattern = 'PUBLISHED|PRIMARY', ignore.case = TRUE, x = Identifier))
+  }
+  uniqueId <- ts_description_row$UniqueId
+  
   assert_that(length(uniqueId) == 1) #could grep for "primary" if >1?
-  extended_attributes <- desc$TimeSeriesDescriptions$ExtendedAttributes
+  extended_attributes <- ts_description_row$ExtendedAttributes
   assert_that(length(extended_attributes) == 1)
   adaps_dd <- extended_attributes[[1]] %>% 
     filter(Name == 'ADAPS_DD') %>% 
@@ -52,12 +61,20 @@ offset_to_ISO <- function(offset) {
 
 parse_bundle_rdb <- function(file) {
   #TODO: don't hard-code America/New_York
-  df <- importRDB1(file,
-                   convertType = FALSE) %>% 
-    mutate(offset_hours = nwislocal2utc_offset_hours(TZCD),
-           DATETIME_tz = paste0(DATETIME, offset_to_ISO(offset_hours)),
-           datetime_parsed = parse_date_time(DATETIME_tz, orders = 'YmdHMSz!*', tz = "America/New_York"),
-           VALUE = as.numeric(VALUE), PRECISION = as.numeric(PRECISION))
+  print(file)
+  if(file.exists(file)) {
+    df <- importRDB1(file,
+                     convertType = FALSE) %>% 
+      mutate(offset_hours = nwislocal2utc_offset_hours(TZCD),
+             DATETIME_tz = paste0(DATETIME, offset_to_ISO(offset_hours)),
+             datetime_parsed = parse_date_time(DATETIME_tz, orders = 'YmdHMSz!*', tz = "America/New_York"),
+             VALUE = as.numeric(VALUE), PRECISION = as.numeric(PRECISION))
+  } else {
+    warning("File doesn't exist, returning empty tibble instead")
+    df <- tibble(datetime_parsed = NA_POSIXct_,
+                 value = NA_real_)
+  }
+
   return(df)
 }
 
@@ -69,7 +86,7 @@ read_and_merge_files <- function(files, value_col_names, start_date) {
       rename_with(.fn = paste, 
                   .cols = !contains('date', ignore.case = TRUE),
                   value_col_names[i], sep = "_") %>% 
-      filter(datetime_parsed >= start_date) 
+      filter(across(any_of("datetime_parsed"), ~.x >= start_date)) 
     all_files_list[[i]] <- df 
   }
   all_files_df <- all_files_list %>% reduce(full_join) %>% 
@@ -98,14 +115,18 @@ read_bundle_join_data <- function(outfile, bundle_zip, site, timeseries_info,
                                           value_col_names = c("adaps_meas",
                                                               "adaps_edit",
                                                               "adaps_corr"),
-                                          start_date = "2007-10-01")
+                                          start_date = as_datetime('2007-10-01 00:00:00', 
+                                                                   tz = "America/New_York"))
   assert_that(!anyDuplicated(all_bundle_data$datetime_parsed))
   aquarius_data <- readRDS(aquarius_data_file)
   joined_adaps_aquarius <- full_join(all_bundle_data, aquarius_data,
                                      by = "datetime_parsed") %>% 
     select(datetime_parsed, contains('value', ignore.case = TRUE), everything()) %>% 
-    rename_with(.fn = tolower) %>% 
-    trim_post_adaps_data(col_to_trim = col_to_trim)
+    rename_with(.fn = tolower)
+  if(!all(is.na(joined_adaps_aquarius[[col_to_trim]]))) {
+    joined_adaps_aquarius <- joined_adaps_aquarius %>% 
+      trim_post_adaps_data(col_to_trim = col_to_trim)
+  }
   unlink(x = files_to_read)
   saveRDS(joined_adaps_aquarius, file = outfile)
 }
@@ -122,8 +143,58 @@ trim_post_adaps_data <- function(df, col_to_trim) {
 summarize_joined_data <- function(outfile, joined_data_file) {
   joined_data <- readRDS(joined_data_file) %>% 
     mutate(diff_raw_edit = abs(value_adaps_edit - aq_raw_value)) 
-  summary_info_list <- list(quartiles = summary(joined_data$diff_raw_edit),
+  summary_info_list <- list(diff_quartiles = summary(joined_data$diff_raw_edit),
                             n_diff_gt_0 = sum(joined_data$diff_raw_edit > 0, na.rm = TRUE),
-                            n_edit_na = sum(is.na(joined_data$value_adaps_edit)))
+                            n_edit_na = sum(is.na(joined_data$value_adaps_edit)),
+                            n_dropped_in_edit = sum(is.na(joined_data$value_adaps_edit) & !is.na(joined_data$aq_raw_value)))
   saveRDS(summary_info_list, file = outfile)
+}
+
+#' @param sample_size Sample size for each pcode
+#' @param states char two-letter state codes for states to look for sites in
+pull_sites <- function(states, pcodes, sample_size) {
+  all_state_data <- tibble()
+  for(state in states) {
+    state_sites <- readNWISdata(service = 'site',
+                                stateCd = state,
+                                startDt = '2007-10-01',
+                                parameterCd = pcodes,
+                                seriesCatalogOutput = TRUE,
+                                outputDataTypeCd = 'iv') %>% 
+      filter(parm_cd %in% pcodes,
+             begin_date <= '2007-10-01',
+             end_date >= '2017-10-01'
+             ) %>% 
+      group_by(site_no, parm_cd) %>% 
+      filter(n() == 1)
+      
+    all_state_data <- bind_rows(all_state_data, state_sites)
+  }
+  final_sample <- all_state_data %>% group_by(parm_cd) %>% 
+    slice_sample(n = sample_size)
+  return(final_sample)
+}
+
+join_to_aq_param_names <- function(df, aq_file_name) {
+  aq_params_json <- jsonlite::fromJSON(aq_file_name, flatten = TRUE,
+                                  simplifyDataFrame = TRUE)
+  aq_params_tbl <- tibble(usgs_pcode = names(aq_params_json),
+                          parameter = unlist(aq_params_json))
+  joined_df <- left_join(df, aq_params_tbl, by = c(parm_cd = 'usgs_pcode')) 
+  return(joined_df)
+}
+
+get_site_sample <- function(states, pcodes, sample_size, aq_file_name) {
+  sites <- pull_sites(states = states, pcodes = pcodes, sample_size = sample_size)
+  sites_aq_names <- join_to_aq_param_names(df = sites, aq_file_name = aq_file_name)
+  return(sites_aq_names)
+}
+
+filter_to_4_param_sites <- function(site_service_output) {
+  state_4_param_sites <- state_sites %>% 
+    filter(begin_date <= '2007-10-01',
+           end_date >= '2017-10-01') %>% 
+    group_by(site_no) %>% 
+    filter('00010' %in% parm_cd,
+           n() >= 4) 
 }

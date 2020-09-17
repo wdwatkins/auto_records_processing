@@ -23,38 +23,593 @@ targets:
     depends:
       - aq_inventory_promise
 
-  # --- 01425000_Temperature, water --- #
+  # --- 01477050_Temperature, water --- #
   
-  timeseries_info_01425000_Temperature, water:
-    command: get_aq_ts_ids(site = I('01425000'),
+  timeseries_info_01477050_Temperature, water:
+    command: get_aq_ts_ids(site = I('01477050'),
       param = I('Temperature, water'),
       host = I('tsqa-api.nwis.usgs.gov'))
 
-  1_fetch/out/aquarius_download_01425000_Temperature, water.rds:
-    command: download_aquarius_raw_data(outfile = target_name, site = I('01425000'),
+  1_fetch/out/aquarius_download_01477050_Temperature, water.rds:
+    command: download_aquarius_raw_data(outfile = target_name, site = I('01477050'),
       parameter = I('Temperature, water'),
-      timeseries_info = `timeseries_info_01425000_Temperature, water`,
+      timeseries_info = `timeseries_info_01477050_Temperature, water`,
       host = I('tsqa-api.nwis.usgs.gov'))
 
-  # --- 01432160_Temperature, water --- #
+  # --- 01477050_Specific cond at 25C --- #
   
-  timeseries_info_01432160_Temperature, water:
-    command: get_aq_ts_ids(site = I('01432160'),
+  timeseries_info_01477050_Specific cond at 25C:
+    command: get_aq_ts_ids(site = I('01477050'),
+      param = I('Specific cond at 25C'),
+      host = I('tsqa-api.nwis.usgs.gov'))
+
+  1_fetch/out/aquarius_download_01477050_Specific cond at 25C.rds:
+    command: download_aquarius_raw_data(outfile = target_name, site = I('01477050'),
+      parameter = I('Specific cond at 25C'),
+      timeseries_info = `timeseries_info_01477050_Specific cond at 25C`,
+      host = I('tsqa-api.nwis.usgs.gov'))
+
+  # --- 01477050_Dissolved oxygen --- #
+  
+  timeseries_info_01477050_Dissolved oxygen:
+    command: get_aq_ts_ids(site = I('01477050'),
+      param = I('Dissolved oxygen'),
+      host = I('tsqa-api.nwis.usgs.gov'))
+
+  1_fetch/out/aquarius_download_01477050_Dissolved oxygen.rds:
+    command: download_aquarius_raw_data(outfile = target_name, site = I('01477050'),
+      parameter = I('Dissolved oxygen'),
+      timeseries_info = `timeseries_info_01477050_Dissolved oxygen`,
+      host = I('tsqa-api.nwis.usgs.gov'))
+
+  # --- 01477050_pH --- #
+  
+  timeseries_info_01477050_pH:
+    command: get_aq_ts_ids(site = I('01477050'),
+      param = I('pH'),
+      host = I('tsqa-api.nwis.usgs.gov'))
+
+  1_fetch/out/aquarius_download_01477050_pH.rds:
+    command: download_aquarius_raw_data(outfile = target_name, site = I('01477050'),
+      parameter = I('pH'),
+      timeseries_info = `timeseries_info_01477050_pH`,
+      host = I('tsqa-api.nwis.usgs.gov'))
+
+  # --- 01480617_Temperature, water --- #
+  
+  timeseries_info_01480617_Temperature, water:
+    command: get_aq_ts_ids(site = I('01480617'),
       param = I('Temperature, water'),
       host = I('tsqa-api.nwis.usgs.gov'))
 
-  1_fetch/out/aquarius_download_01432160_Temperature, water.rds:
-    command: download_aquarius_raw_data(outfile = target_name, site = I('01432160'),
+  1_fetch/out/aquarius_download_01480617_Temperature, water.rds:
+    command: download_aquarius_raw_data(outfile = target_name, site = I('01480617'),
       parameter = I('Temperature, water'),
-      timeseries_info = `timeseries_info_01432160_Temperature, water`,
+      timeseries_info = `timeseries_info_01480617_Temperature, water`,
+      host = I('tsqa-api.nwis.usgs.gov'))
+
+  # --- 01480617_Discharge --- #
+  
+  timeseries_info_01480617_Discharge:
+    command: get_aq_ts_ids(site = I('01480617'),
+      param = I('Discharge'),
+      host = I('tsqa-api.nwis.usgs.gov'))
+
+  1_fetch/out/aquarius_download_01480617_Discharge.rds:
+    command: download_aquarius_raw_data(outfile = target_name, site = I('01480617'),
+      parameter = I('Discharge'),
+      timeseries_info = `timeseries_info_01480617_Discharge`,
+      host = I('tsqa-api.nwis.usgs.gov'))
+
+  # --- 01480617_Gage height --- #
+  
+  timeseries_info_01480617_Gage height:
+    command: get_aq_ts_ids(site = I('01480617'),
+      param = I('Gage height'),
+      host = I('tsqa-api.nwis.usgs.gov'))
+
+  1_fetch/out/aquarius_download_01480617_Gage height.rds:
+    command: download_aquarius_raw_data(outfile = target_name, site = I('01480617'),
+      parameter = I('Gage height'),
+      timeseries_info = `timeseries_info_01480617_Gage height`,
+      host = I('tsqa-api.nwis.usgs.gov'))
+
+  # --- 01480617_Specific cond at 25C --- #
+  
+  timeseries_info_01480617_Specific cond at 25C:
+    command: get_aq_ts_ids(site = I('01480617'),
+      param = I('Specific cond at 25C'),
+      host = I('tsqa-api.nwis.usgs.gov'))
+
+  1_fetch/out/aquarius_download_01480617_Specific cond at 25C.rds:
+    command: download_aquarius_raw_data(outfile = target_name, site = I('01480617'),
+      parameter = I('Specific cond at 25C'),
+      timeseries_info = `timeseries_info_01480617_Specific cond at 25C`,
+      host = I('tsqa-api.nwis.usgs.gov'))
+
+  # --- 01480617_Dissolved oxygen --- #
+  
+  timeseries_info_01480617_Dissolved oxygen:
+    command: get_aq_ts_ids(site = I('01480617'),
+      param = I('Dissolved oxygen'),
+      host = I('tsqa-api.nwis.usgs.gov'))
+
+  1_fetch/out/aquarius_download_01480617_Dissolved oxygen.rds:
+    command: download_aquarius_raw_data(outfile = target_name, site = I('01480617'),
+      parameter = I('Dissolved oxygen'),
+      timeseries_info = `timeseries_info_01480617_Dissolved oxygen`,
+      host = I('tsqa-api.nwis.usgs.gov'))
+
+  # --- 01480617_pH --- #
+  
+  timeseries_info_01480617_pH:
+    command: get_aq_ts_ids(site = I('01480617'),
+      param = I('pH'),
+      host = I('tsqa-api.nwis.usgs.gov'))
+
+  1_fetch/out/aquarius_download_01480617_pH.rds:
+    command: download_aquarius_raw_data(outfile = target_name, site = I('01480617'),
+      parameter = I('pH'),
+      timeseries_info = `timeseries_info_01480617_pH`,
+      host = I('tsqa-api.nwis.usgs.gov'))
+
+  # --- 01480617_Turbidity, FNU --- #
+  
+  timeseries_info_01480617_Turbidity, FNU:
+    command: get_aq_ts_ids(site = I('01480617'),
+      param = I('Turbidity, FNU'),
+      host = I('tsqa-api.nwis.usgs.gov'))
+
+  1_fetch/out/aquarius_download_01480617_Turbidity, FNU.rds:
+    command: download_aquarius_raw_data(outfile = target_name, site = I('01480617'),
+      parameter = I('Turbidity, FNU'),
+      timeseries_info = `timeseries_info_01480617_Turbidity, FNU`,
+      host = I('tsqa-api.nwis.usgs.gov'))
+
+  # --- 01480870_Temperature, water --- #
+  
+  timeseries_info_01480870_Temperature, water:
+    command: get_aq_ts_ids(site = I('01480870'),
+      param = I('Temperature, water'),
+      host = I('tsqa-api.nwis.usgs.gov'))
+
+  1_fetch/out/aquarius_download_01480870_Temperature, water.rds:
+    command: download_aquarius_raw_data(outfile = target_name, site = I('01480870'),
+      parameter = I('Temperature, water'),
+      timeseries_info = `timeseries_info_01480870_Temperature, water`,
+      host = I('tsqa-api.nwis.usgs.gov'))
+
+  # --- 01480870_Discharge --- #
+  
+  timeseries_info_01480870_Discharge:
+    command: get_aq_ts_ids(site = I('01480870'),
+      param = I('Discharge'),
+      host = I('tsqa-api.nwis.usgs.gov'))
+
+  1_fetch/out/aquarius_download_01480870_Discharge.rds:
+    command: download_aquarius_raw_data(outfile = target_name, site = I('01480870'),
+      parameter = I('Discharge'),
+      timeseries_info = `timeseries_info_01480870_Discharge`,
+      host = I('tsqa-api.nwis.usgs.gov'))
+
+  # --- 01480870_Gage height --- #
+  
+  timeseries_info_01480870_Gage height:
+    command: get_aq_ts_ids(site = I('01480870'),
+      param = I('Gage height'),
+      host = I('tsqa-api.nwis.usgs.gov'))
+
+  1_fetch/out/aquarius_download_01480870_Gage height.rds:
+    command: download_aquarius_raw_data(outfile = target_name, site = I('01480870'),
+      parameter = I('Gage height'),
+      timeseries_info = `timeseries_info_01480870_Gage height`,
+      host = I('tsqa-api.nwis.usgs.gov'))
+
+  # --- 01480870_Specific cond at 25C --- #
+  
+  timeseries_info_01480870_Specific cond at 25C:
+    command: get_aq_ts_ids(site = I('01480870'),
+      param = I('Specific cond at 25C'),
+      host = I('tsqa-api.nwis.usgs.gov'))
+
+  1_fetch/out/aquarius_download_01480870_Specific cond at 25C.rds:
+    command: download_aquarius_raw_data(outfile = target_name, site = I('01480870'),
+      parameter = I('Specific cond at 25C'),
+      timeseries_info = `timeseries_info_01480870_Specific cond at 25C`,
+      host = I('tsqa-api.nwis.usgs.gov'))
+
+  # --- 01480870_Dissolved oxygen --- #
+  
+  timeseries_info_01480870_Dissolved oxygen:
+    command: get_aq_ts_ids(site = I('01480870'),
+      param = I('Dissolved oxygen'),
+      host = I('tsqa-api.nwis.usgs.gov'))
+
+  1_fetch/out/aquarius_download_01480870_Dissolved oxygen.rds:
+    command: download_aquarius_raw_data(outfile = target_name, site = I('01480870'),
+      parameter = I('Dissolved oxygen'),
+      timeseries_info = `timeseries_info_01480870_Dissolved oxygen`,
+      host = I('tsqa-api.nwis.usgs.gov'))
+
+  # --- 01480870_pH --- #
+  
+  timeseries_info_01480870_pH:
+    command: get_aq_ts_ids(site = I('01480870'),
+      param = I('pH'),
+      host = I('tsqa-api.nwis.usgs.gov'))
+
+  1_fetch/out/aquarius_download_01480870_pH.rds:
+    command: download_aquarius_raw_data(outfile = target_name, site = I('01480870'),
+      parameter = I('pH'),
+      timeseries_info = `timeseries_info_01480870_pH`,
+      host = I('tsqa-api.nwis.usgs.gov'))
+
+  # --- 01480870_Turbidity, FNU --- #
+  
+  timeseries_info_01480870_Turbidity, FNU:
+    command: get_aq_ts_ids(site = I('01480870'),
+      param = I('Turbidity, FNU'),
+      host = I('tsqa-api.nwis.usgs.gov'))
+
+  1_fetch/out/aquarius_download_01480870_Turbidity, FNU.rds:
+    command: download_aquarius_raw_data(outfile = target_name, site = I('01480870'),
+      parameter = I('Turbidity, FNU'),
+      timeseries_info = `timeseries_info_01480870_Turbidity, FNU`,
+      host = I('tsqa-api.nwis.usgs.gov'))
+
+  # --- 01481000_Temperature, water --- #
+  
+  timeseries_info_01481000_Temperature, water:
+    command: get_aq_ts_ids(site = I('01481000'),
+      param = I('Temperature, water'),
+      host = I('tsqa-api.nwis.usgs.gov'))
+
+  1_fetch/out/aquarius_download_01481000_Temperature, water.rds:
+    command: download_aquarius_raw_data(outfile = target_name, site = I('01481000'),
+      parameter = I('Temperature, water'),
+      timeseries_info = `timeseries_info_01481000_Temperature, water`,
+      host = I('tsqa-api.nwis.usgs.gov'))
+
+  # --- 01481000_Discharge --- #
+  
+  timeseries_info_01481000_Discharge:
+    command: get_aq_ts_ids(site = I('01481000'),
+      param = I('Discharge'),
+      host = I('tsqa-api.nwis.usgs.gov'))
+
+  1_fetch/out/aquarius_download_01481000_Discharge.rds:
+    command: download_aquarius_raw_data(outfile = target_name, site = I('01481000'),
+      parameter = I('Discharge'),
+      timeseries_info = `timeseries_info_01481000_Discharge`,
+      host = I('tsqa-api.nwis.usgs.gov'))
+
+  # --- 01481000_Gage height --- #
+  
+  timeseries_info_01481000_Gage height:
+    command: get_aq_ts_ids(site = I('01481000'),
+      param = I('Gage height'),
+      host = I('tsqa-api.nwis.usgs.gov'))
+
+  1_fetch/out/aquarius_download_01481000_Gage height.rds:
+    command: download_aquarius_raw_data(outfile = target_name, site = I('01481000'),
+      parameter = I('Gage height'),
+      timeseries_info = `timeseries_info_01481000_Gage height`,
+      host = I('tsqa-api.nwis.usgs.gov'))
+
+  # --- 01481000_Specific cond at 25C --- #
+  
+  timeseries_info_01481000_Specific cond at 25C:
+    command: get_aq_ts_ids(site = I('01481000'),
+      param = I('Specific cond at 25C'),
+      host = I('tsqa-api.nwis.usgs.gov'))
+
+  1_fetch/out/aquarius_download_01481000_Specific cond at 25C.rds:
+    command: download_aquarius_raw_data(outfile = target_name, site = I('01481000'),
+      parameter = I('Specific cond at 25C'),
+      timeseries_info = `timeseries_info_01481000_Specific cond at 25C`,
+      host = I('tsqa-api.nwis.usgs.gov'))
+
+  # --- 01481000_pH --- #
+  
+  timeseries_info_01481000_pH:
+    command: get_aq_ts_ids(site = I('01481000'),
+      param = I('pH'),
+      host = I('tsqa-api.nwis.usgs.gov'))
+
+  1_fetch/out/aquarius_download_01481000_pH.rds:
+    command: download_aquarius_raw_data(outfile = target_name, site = I('01481000'),
+      parameter = I('pH'),
+      timeseries_info = `timeseries_info_01481000_pH`,
+      host = I('tsqa-api.nwis.usgs.gov'))
+
+  # --- 01481000_Turbidity, FNU --- #
+  
+  timeseries_info_01481000_Turbidity, FNU:
+    command: get_aq_ts_ids(site = I('01481000'),
+      param = I('Turbidity, FNU'),
+      host = I('tsqa-api.nwis.usgs.gov'))
+
+  1_fetch/out/aquarius_download_01481000_Turbidity, FNU.rds:
+    command: download_aquarius_raw_data(outfile = target_name, site = I('01481000'),
+      parameter = I('Turbidity, FNU'),
+      timeseries_info = `timeseries_info_01481000_Turbidity, FNU`,
+      host = I('tsqa-api.nwis.usgs.gov'))
+
+  # --- 03049640_Temperature, water --- #
+  
+  timeseries_info_03049640_Temperature, water:
+    command: get_aq_ts_ids(site = I('03049640'),
+      param = I('Temperature, water'),
+      host = I('tsqa-api.nwis.usgs.gov'))
+
+  1_fetch/out/aquarius_download_03049640_Temperature, water.rds:
+    command: download_aquarius_raw_data(outfile = target_name, site = I('03049640'),
+      parameter = I('Temperature, water'),
+      timeseries_info = `timeseries_info_03049640_Temperature, water`,
+      host = I('tsqa-api.nwis.usgs.gov'))
+
+  # --- 03049640_Specific cond at 25C --- #
+  
+  timeseries_info_03049640_Specific cond at 25C:
+    command: get_aq_ts_ids(site = I('03049640'),
+      param = I('Specific cond at 25C'),
+      host = I('tsqa-api.nwis.usgs.gov'))
+
+  1_fetch/out/aquarius_download_03049640_Specific cond at 25C.rds:
+    command: download_aquarius_raw_data(outfile = target_name, site = I('03049640'),
+      parameter = I('Specific cond at 25C'),
+      timeseries_info = `timeseries_info_03049640_Specific cond at 25C`,
+      host = I('tsqa-api.nwis.usgs.gov'))
+
+  # --- 03049640_Dissolved oxygen --- #
+  
+  timeseries_info_03049640_Dissolved oxygen:
+    command: get_aq_ts_ids(site = I('03049640'),
+      param = I('Dissolved oxygen'),
+      host = I('tsqa-api.nwis.usgs.gov'))
+
+  1_fetch/out/aquarius_download_03049640_Dissolved oxygen.rds:
+    command: download_aquarius_raw_data(outfile = target_name, site = I('03049640'),
+      parameter = I('Dissolved oxygen'),
+      timeseries_info = `timeseries_info_03049640_Dissolved oxygen`,
+      host = I('tsqa-api.nwis.usgs.gov'))
+
+  # --- 03049640_pH --- #
+  
+  timeseries_info_03049640_pH:
+    command: get_aq_ts_ids(site = I('03049640'),
+      param = I('pH'),
+      host = I('tsqa-api.nwis.usgs.gov'))
+
+  1_fetch/out/aquarius_download_03049640_pH.rds:
+    command: download_aquarius_raw_data(outfile = target_name, site = I('03049640'),
+      parameter = I('pH'),
+      timeseries_info = `timeseries_info_03049640_pH`,
+      host = I('tsqa-api.nwis.usgs.gov'))
+
+  # --- 03079000_Temperature, water --- #
+  
+  timeseries_info_03079000_Temperature, water:
+    command: get_aq_ts_ids(site = I('03079000'),
+      param = I('Temperature, water'),
+      host = I('tsqa-api.nwis.usgs.gov'))
+
+  1_fetch/out/aquarius_download_03079000_Temperature, water.rds:
+    command: download_aquarius_raw_data(outfile = target_name, site = I('03079000'),
+      parameter = I('Temperature, water'),
+      timeseries_info = `timeseries_info_03079000_Temperature, water`,
+      host = I('tsqa-api.nwis.usgs.gov'))
+
+  # --- 03079000_Discharge --- #
+  
+  timeseries_info_03079000_Discharge:
+    command: get_aq_ts_ids(site = I('03079000'),
+      param = I('Discharge'),
+      host = I('tsqa-api.nwis.usgs.gov'))
+
+  1_fetch/out/aquarius_download_03079000_Discharge.rds:
+    command: download_aquarius_raw_data(outfile = target_name, site = I('03079000'),
+      parameter = I('Discharge'),
+      timeseries_info = `timeseries_info_03079000_Discharge`,
+      host = I('tsqa-api.nwis.usgs.gov'))
+
+  # --- 03079000_Gage height --- #
+  
+  timeseries_info_03079000_Gage height:
+    command: get_aq_ts_ids(site = I('03079000'),
+      param = I('Gage height'),
+      host = I('tsqa-api.nwis.usgs.gov'))
+
+  1_fetch/out/aquarius_download_03079000_Gage height.rds:
+    command: download_aquarius_raw_data(outfile = target_name, site = I('03079000'),
+      parameter = I('Gage height'),
+      timeseries_info = `timeseries_info_03079000_Gage height`,
+      host = I('tsqa-api.nwis.usgs.gov'))
+
+  # --- 03079000_Specific cond at 25C --- #
+  
+  timeseries_info_03079000_Specific cond at 25C:
+    command: get_aq_ts_ids(site = I('03079000'),
+      param = I('Specific cond at 25C'),
+      host = I('tsqa-api.nwis.usgs.gov'))
+
+  1_fetch/out/aquarius_download_03079000_Specific cond at 25C.rds:
+    command: download_aquarius_raw_data(outfile = target_name, site = I('03079000'),
+      parameter = I('Specific cond at 25C'),
+      timeseries_info = `timeseries_info_03079000_Specific cond at 25C`,
+      host = I('tsqa-api.nwis.usgs.gov'))
+
+  # --- 03079000_pH --- #
+  
+  timeseries_info_03079000_pH:
+    command: get_aq_ts_ids(site = I('03079000'),
+      param = I('pH'),
+      host = I('tsqa-api.nwis.usgs.gov'))
+
+  1_fetch/out/aquarius_download_03079000_pH.rds:
+    command: download_aquarius_raw_data(outfile = target_name, site = I('03079000'),
+      parameter = I('pH'),
+      timeseries_info = `timeseries_info_03079000_pH`,
+      host = I('tsqa-api.nwis.usgs.gov'))
+
+  # --- 03081000_Temperature, water --- #
+  
+  timeseries_info_03081000_Temperature, water:
+    command: get_aq_ts_ids(site = I('03081000'),
+      param = I('Temperature, water'),
+      host = I('tsqa-api.nwis.usgs.gov'))
+
+  1_fetch/out/aquarius_download_03081000_Temperature, water.rds:
+    command: download_aquarius_raw_data(outfile = target_name, site = I('03081000'),
+      parameter = I('Temperature, water'),
+      timeseries_info = `timeseries_info_03081000_Temperature, water`,
+      host = I('tsqa-api.nwis.usgs.gov'))
+
+  # --- 03081000_Discharge --- #
+  
+  timeseries_info_03081000_Discharge:
+    command: get_aq_ts_ids(site = I('03081000'),
+      param = I('Discharge'),
+      host = I('tsqa-api.nwis.usgs.gov'))
+
+  1_fetch/out/aquarius_download_03081000_Discharge.rds:
+    command: download_aquarius_raw_data(outfile = target_name, site = I('03081000'),
+      parameter = I('Discharge'),
+      timeseries_info = `timeseries_info_03081000_Discharge`,
+      host = I('tsqa-api.nwis.usgs.gov'))
+
+  # --- 03081000_Gage height --- #
+  
+  timeseries_info_03081000_Gage height:
+    command: get_aq_ts_ids(site = I('03081000'),
+      param = I('Gage height'),
+      host = I('tsqa-api.nwis.usgs.gov'))
+
+  1_fetch/out/aquarius_download_03081000_Gage height.rds:
+    command: download_aquarius_raw_data(outfile = target_name, site = I('03081000'),
+      parameter = I('Gage height'),
+      timeseries_info = `timeseries_info_03081000_Gage height`,
+      host = I('tsqa-api.nwis.usgs.gov'))
+
+  # --- 03081000_Specific cond at 25C --- #
+  
+  timeseries_info_03081000_Specific cond at 25C:
+    command: get_aq_ts_ids(site = I('03081000'),
+      param = I('Specific cond at 25C'),
+      host = I('tsqa-api.nwis.usgs.gov'))
+
+  1_fetch/out/aquarius_download_03081000_Specific cond at 25C.rds:
+    command: download_aquarius_raw_data(outfile = target_name, site = I('03081000'),
+      parameter = I('Specific cond at 25C'),
+      timeseries_info = `timeseries_info_03081000_Specific cond at 25C`,
+      host = I('tsqa-api.nwis.usgs.gov'))
+
+  # --- 03081000_Dissolved oxygen --- #
+  
+  timeseries_info_03081000_Dissolved oxygen:
+    command: get_aq_ts_ids(site = I('03081000'),
+      param = I('Dissolved oxygen'),
+      host = I('tsqa-api.nwis.usgs.gov'))
+
+  1_fetch/out/aquarius_download_03081000_Dissolved oxygen.rds:
+    command: download_aquarius_raw_data(outfile = target_name, site = I('03081000'),
+      parameter = I('Dissolved oxygen'),
+      timeseries_info = `timeseries_info_03081000_Dissolved oxygen`,
+      host = I('tsqa-api.nwis.usgs.gov'))
+
+  # --- 03081000_pH --- #
+  
+  timeseries_info_03081000_pH:
+    command: get_aq_ts_ids(site = I('03081000'),
+      param = I('pH'),
+      host = I('tsqa-api.nwis.usgs.gov'))
+
+  1_fetch/out/aquarius_download_03081000_pH.rds:
+    command: download_aquarius_raw_data(outfile = target_name, site = I('03081000'),
+      parameter = I('pH'),
+      timeseries_info = `timeseries_info_03081000_pH`,
       host = I('tsqa-api.nwis.usgs.gov'))
 
   # --- Overall job --- #
 
   aq_inventory_promise:
     command: get_aq_inventory(
-      `timeseries_info_01425000_Temperature, water`,
-      '1_fetch/out/aquarius_download_01425000_Temperature, water.rds',
-      `timeseries_info_01432160_Temperature, water`,
-      '1_fetch/out/aquarius_download_01432160_Temperature, water.rds')
+      `timeseries_info_01477050_Temperature, water`,
+      '1_fetch/out/aquarius_download_01477050_Temperature, water.rds',
+      `timeseries_info_01477050_Specific cond at 25C`,
+      '1_fetch/out/aquarius_download_01477050_Specific cond at 25C.rds',
+      `timeseries_info_01477050_Dissolved oxygen`,
+      '1_fetch/out/aquarius_download_01477050_Dissolved oxygen.rds',
+      `timeseries_info_01477050_pH`,
+      '1_fetch/out/aquarius_download_01477050_pH.rds',
+      `timeseries_info_01480617_Temperature, water`,
+      '1_fetch/out/aquarius_download_01480617_Temperature, water.rds',
+      `timeseries_info_01480617_Discharge`,
+      '1_fetch/out/aquarius_download_01480617_Discharge.rds',
+      `timeseries_info_01480617_Gage height`,
+      '1_fetch/out/aquarius_download_01480617_Gage height.rds',
+      `timeseries_info_01480617_Specific cond at 25C`,
+      '1_fetch/out/aquarius_download_01480617_Specific cond at 25C.rds',
+      `timeseries_info_01480617_Dissolved oxygen`,
+      '1_fetch/out/aquarius_download_01480617_Dissolved oxygen.rds',
+      `timeseries_info_01480617_pH`,
+      '1_fetch/out/aquarius_download_01480617_pH.rds',
+      `timeseries_info_01480617_Turbidity, FNU`,
+      '1_fetch/out/aquarius_download_01480617_Turbidity, FNU.rds',
+      `timeseries_info_01480870_Temperature, water`,
+      '1_fetch/out/aquarius_download_01480870_Temperature, water.rds',
+      `timeseries_info_01480870_Discharge`,
+      '1_fetch/out/aquarius_download_01480870_Discharge.rds',
+      `timeseries_info_01480870_Gage height`,
+      '1_fetch/out/aquarius_download_01480870_Gage height.rds',
+      `timeseries_info_01480870_Specific cond at 25C`,
+      '1_fetch/out/aquarius_download_01480870_Specific cond at 25C.rds',
+      `timeseries_info_01480870_Dissolved oxygen`,
+      '1_fetch/out/aquarius_download_01480870_Dissolved oxygen.rds',
+      `timeseries_info_01480870_pH`,
+      '1_fetch/out/aquarius_download_01480870_pH.rds',
+      `timeseries_info_01480870_Turbidity, FNU`,
+      '1_fetch/out/aquarius_download_01480870_Turbidity, FNU.rds',
+      `timeseries_info_01481000_Temperature, water`,
+      '1_fetch/out/aquarius_download_01481000_Temperature, water.rds',
+      `timeseries_info_01481000_Discharge`,
+      '1_fetch/out/aquarius_download_01481000_Discharge.rds',
+      `timeseries_info_01481000_Gage height`,
+      '1_fetch/out/aquarius_download_01481000_Gage height.rds',
+      `timeseries_info_01481000_Specific cond at 25C`,
+      '1_fetch/out/aquarius_download_01481000_Specific cond at 25C.rds',
+      `timeseries_info_01481000_pH`,
+      '1_fetch/out/aquarius_download_01481000_pH.rds',
+      `timeseries_info_01481000_Turbidity, FNU`,
+      '1_fetch/out/aquarius_download_01481000_Turbidity, FNU.rds',
+      `timeseries_info_03049640_Temperature, water`,
+      '1_fetch/out/aquarius_download_03049640_Temperature, water.rds',
+      `timeseries_info_03049640_Specific cond at 25C`,
+      '1_fetch/out/aquarius_download_03049640_Specific cond at 25C.rds',
+      `timeseries_info_03049640_Dissolved oxygen`,
+      '1_fetch/out/aquarius_download_03049640_Dissolved oxygen.rds',
+      `timeseries_info_03049640_pH`,
+      '1_fetch/out/aquarius_download_03049640_pH.rds',
+      `timeseries_info_03079000_Temperature, water`,
+      '1_fetch/out/aquarius_download_03079000_Temperature, water.rds',
+      `timeseries_info_03079000_Discharge`,
+      '1_fetch/out/aquarius_download_03079000_Discharge.rds',
+      `timeseries_info_03079000_Gage height`,
+      '1_fetch/out/aquarius_download_03079000_Gage height.rds',
+      `timeseries_info_03079000_Specific cond at 25C`,
+      '1_fetch/out/aquarius_download_03079000_Specific cond at 25C.rds',
+      `timeseries_info_03079000_pH`,
+      '1_fetch/out/aquarius_download_03079000_pH.rds',
+      `timeseries_info_03081000_Temperature, water`,
+      '1_fetch/out/aquarius_download_03081000_Temperature, water.rds',
+      `timeseries_info_03081000_Discharge`,
+      '1_fetch/out/aquarius_download_03081000_Discharge.rds',
+      `timeseries_info_03081000_Gage height`,
+      '1_fetch/out/aquarius_download_03081000_Gage height.rds',
+      `timeseries_info_03081000_Specific cond at 25C`,
+      '1_fetch/out/aquarius_download_03081000_Specific cond at 25C.rds',
+      `timeseries_info_03081000_Dissolved oxygen`,
+      '1_fetch/out/aquarius_download_03081000_Dissolved oxygen.rds',
+      `timeseries_info_03081000_pH`,
+      '1_fetch/out/aquarius_download_03081000_pH.rds')
     

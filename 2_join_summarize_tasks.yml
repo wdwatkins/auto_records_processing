@@ -13,10 +13,15 @@ include:
 packages:
   - tidyverse
   - lubridate
+  - magrittr
+  - dygraphs
+  - xts
+  - htmlwidgets
 
 sources:
   - R/utilities.R
   - R/pipeline_functions.R
+  - R/summary_plots.R
 
 file_extensions:
   - "ind"
@@ -26,36 +31,169 @@ targets:
     depends:
       - all_summaries_promise
 
-  # --- 01425000_Temperature, water --- #
+  # --- 01477050_Temperature, water --- #
   
-  2_process/out/joined_data_01425000_Temperature, water.rds:
-    command: read_bundle_join_data(outfile = target_name, site = I('01425000'),
-      bundle = '1_fetch/zip/bundle_01425000.zip',
-      timeseries_info = `timeseries_info_01425000_Temperature, water`,
-      aquarius_data = '1_fetch/out/aquarius_download_01425000_Temperature, water.rds', col_to_trim = I('value_adaps_edit'))
+  2_process/out/joined_data_01477050_Temperature, water.rds:
+    command: read_bundle_join_data(outfile = target_name, site = I('01477050'),
+      bundle = '1_fetch/zip/bundle_01477050.zip',
+      timeseries_info = `timeseries_info_01477050_Temperature, water`,
+      col_to_trim = I('value_adaps_edit'),
+                                    aq_param_to_predict = aq_param_to_predict, '1_fetch/out/aquarius_download_01477050_Temperature, water.rds','1_fetch/out/aquarius_download_01477050_Specific cond at 25C.rds','1_fetch/out/aquarius_download_01477050_Dissolved oxygen.rds','1_fetch/out/aquarius_download_01477050_pH.rds')
 
-  2_process/out/summary_01425000_Temperature, water.rds:
+  2_process/out/summary_01477050_Temperature, water.rds:
     command: summarize_joined_data(outfile = target_name,
-               joined_data_file = '2_process/out/joined_data_01425000_Temperature, water.rds')
+               joined_data_file = '2_process/out/joined_data_01477050_Temperature, water.rds')
 
-  # --- 01432160_Temperature, water --- #
+  2_process/out/dygraph_01477050_Temperature, water.html:
+    command: dygraph_edited_raw(outfile = target_name,
+               joined_data_file = '2_process/out/joined_data_01477050_Temperature, water.rds',
+      summary_file = '2_process/out/summary_01477050_Temperature, water.rds',
+      site_no = I('01477050'),
+      parameter = I('Temperature, water'))
+
+  # --- 01480617_Temperature, water --- #
   
-  2_process/out/joined_data_01432160_Temperature, water.rds:
-    command: read_bundle_join_data(outfile = target_name, site = I('01432160'),
-      bundle = '1_fetch/zip/bundle_01432160.zip',
-      timeseries_info = `timeseries_info_01432160_Temperature, water`,
-      aquarius_data = '1_fetch/out/aquarius_download_01432160_Temperature, water.rds', col_to_trim = I('value_adaps_edit'))
+  2_process/out/joined_data_01480617_Temperature, water.rds:
+    command: read_bundle_join_data(outfile = target_name, site = I('01480617'),
+      bundle = '1_fetch/zip/bundle_01480617.zip',
+      timeseries_info = `timeseries_info_01480617_Temperature, water`,
+      col_to_trim = I('value_adaps_edit'),
+                                    aq_param_to_predict = aq_param_to_predict, '1_fetch/out/aquarius_download_01480617_Temperature, water.rds','1_fetch/out/aquarius_download_01480617_Discharge.rds','1_fetch/out/aquarius_download_01480617_Gage height.rds','1_fetch/out/aquarius_download_01480617_Specific cond at 25C.rds','1_fetch/out/aquarius_download_01480617_Dissolved oxygen.rds','1_fetch/out/aquarius_download_01480617_pH.rds','1_fetch/out/aquarius_download_01480617_Turbidity, FNU.rds')
 
-  2_process/out/summary_01432160_Temperature, water.rds:
+  2_process/out/summary_01480617_Temperature, water.rds:
     command: summarize_joined_data(outfile = target_name,
-               joined_data_file = '2_process/out/joined_data_01432160_Temperature, water.rds')
+               joined_data_file = '2_process/out/joined_data_01480617_Temperature, water.rds')
+
+  2_process/out/dygraph_01480617_Temperature, water.html:
+    command: dygraph_edited_raw(outfile = target_name,
+               joined_data_file = '2_process/out/joined_data_01480617_Temperature, water.rds',
+      summary_file = '2_process/out/summary_01480617_Temperature, water.rds',
+      site_no = I('01480617'),
+      parameter = I('Temperature, water'))
+
+  # --- 01480870_Temperature, water --- #
+  
+  2_process/out/joined_data_01480870_Temperature, water.rds:
+    command: read_bundle_join_data(outfile = target_name, site = I('01480870'),
+      bundle = '1_fetch/zip/bundle_01480870.zip',
+      timeseries_info = `timeseries_info_01480870_Temperature, water`,
+      col_to_trim = I('value_adaps_edit'),
+                                    aq_param_to_predict = aq_param_to_predict, '1_fetch/out/aquarius_download_01480870_Temperature, water.rds','1_fetch/out/aquarius_download_01480870_Discharge.rds','1_fetch/out/aquarius_download_01480870_Gage height.rds','1_fetch/out/aquarius_download_01480870_Specific cond at 25C.rds','1_fetch/out/aquarius_download_01480870_Dissolved oxygen.rds','1_fetch/out/aquarius_download_01480870_pH.rds','1_fetch/out/aquarius_download_01480870_Turbidity, FNU.rds')
+
+  2_process/out/summary_01480870_Temperature, water.rds:
+    command: summarize_joined_data(outfile = target_name,
+               joined_data_file = '2_process/out/joined_data_01480870_Temperature, water.rds')
+
+  2_process/out/dygraph_01480870_Temperature, water.html:
+    command: dygraph_edited_raw(outfile = target_name,
+               joined_data_file = '2_process/out/joined_data_01480870_Temperature, water.rds',
+      summary_file = '2_process/out/summary_01480870_Temperature, water.rds',
+      site_no = I('01480870'),
+      parameter = I('Temperature, water'))
+
+  # --- 01481000_Temperature, water --- #
+  
+  2_process/out/joined_data_01481000_Temperature, water.rds:
+    command: read_bundle_join_data(outfile = target_name, site = I('01481000'),
+      bundle = '1_fetch/zip/bundle_01481000.zip',
+      timeseries_info = `timeseries_info_01481000_Temperature, water`,
+      col_to_trim = I('value_adaps_edit'),
+                                    aq_param_to_predict = aq_param_to_predict, '1_fetch/out/aquarius_download_01481000_Temperature, water.rds','1_fetch/out/aquarius_download_01481000_Discharge.rds','1_fetch/out/aquarius_download_01481000_Gage height.rds','1_fetch/out/aquarius_download_01481000_Specific cond at 25C.rds','1_fetch/out/aquarius_download_01481000_pH.rds','1_fetch/out/aquarius_download_01481000_Turbidity, FNU.rds')
+
+  2_process/out/summary_01481000_Temperature, water.rds:
+    command: summarize_joined_data(outfile = target_name,
+               joined_data_file = '2_process/out/joined_data_01481000_Temperature, water.rds')
+
+  2_process/out/dygraph_01481000_Temperature, water.html:
+    command: dygraph_edited_raw(outfile = target_name,
+               joined_data_file = '2_process/out/joined_data_01481000_Temperature, water.rds',
+      summary_file = '2_process/out/summary_01481000_Temperature, water.rds',
+      site_no = I('01481000'),
+      parameter = I('Temperature, water'))
+
+  # --- 03049640_Temperature, water --- #
+  
+  2_process/out/joined_data_03049640_Temperature, water.rds:
+    command: read_bundle_join_data(outfile = target_name, site = I('03049640'),
+      bundle = '1_fetch/zip/bundle_03049640.zip',
+      timeseries_info = `timeseries_info_03049640_Temperature, water`,
+      col_to_trim = I('value_adaps_edit'),
+                                    aq_param_to_predict = aq_param_to_predict, '1_fetch/out/aquarius_download_03049640_Temperature, water.rds','1_fetch/out/aquarius_download_03049640_Specific cond at 25C.rds','1_fetch/out/aquarius_download_03049640_Dissolved oxygen.rds','1_fetch/out/aquarius_download_03049640_pH.rds')
+
+  2_process/out/summary_03049640_Temperature, water.rds:
+    command: summarize_joined_data(outfile = target_name,
+               joined_data_file = '2_process/out/joined_data_03049640_Temperature, water.rds')
+
+  2_process/out/dygraph_03049640_Temperature, water.html:
+    command: dygraph_edited_raw(outfile = target_name,
+               joined_data_file = '2_process/out/joined_data_03049640_Temperature, water.rds',
+      summary_file = '2_process/out/summary_03049640_Temperature, water.rds',
+      site_no = I('03049640'),
+      parameter = I('Temperature, water'))
+
+  # --- 03079000_Temperature, water --- #
+  
+  2_process/out/joined_data_03079000_Temperature, water.rds:
+    command: read_bundle_join_data(outfile = target_name, site = I('03079000'),
+      bundle = '1_fetch/zip/bundle_03079000.zip',
+      timeseries_info = `timeseries_info_03079000_Temperature, water`,
+      col_to_trim = I('value_adaps_edit'),
+                                    aq_param_to_predict = aq_param_to_predict, '1_fetch/out/aquarius_download_03079000_Temperature, water.rds','1_fetch/out/aquarius_download_03079000_Discharge.rds','1_fetch/out/aquarius_download_03079000_Gage height.rds','1_fetch/out/aquarius_download_03079000_Specific cond at 25C.rds','1_fetch/out/aquarius_download_03079000_pH.rds')
+
+  2_process/out/summary_03079000_Temperature, water.rds:
+    command: summarize_joined_data(outfile = target_name,
+               joined_data_file = '2_process/out/joined_data_03079000_Temperature, water.rds')
+
+  2_process/out/dygraph_03079000_Temperature, water.html:
+    command: dygraph_edited_raw(outfile = target_name,
+               joined_data_file = '2_process/out/joined_data_03079000_Temperature, water.rds',
+      summary_file = '2_process/out/summary_03079000_Temperature, water.rds',
+      site_no = I('03079000'),
+      parameter = I('Temperature, water'))
+
+  # --- 03081000_Temperature, water --- #
+  
+  2_process/out/joined_data_03081000_Temperature, water.rds:
+    command: read_bundle_join_data(outfile = target_name, site = I('03081000'),
+      bundle = '1_fetch/zip/bundle_03081000.zip',
+      timeseries_info = `timeseries_info_03081000_Temperature, water`,
+      col_to_trim = I('value_adaps_edit'),
+                                    aq_param_to_predict = aq_param_to_predict, '1_fetch/out/aquarius_download_03081000_Temperature, water.rds','1_fetch/out/aquarius_download_03081000_Discharge.rds','1_fetch/out/aquarius_download_03081000_Gage height.rds','1_fetch/out/aquarius_download_03081000_Specific cond at 25C.rds','1_fetch/out/aquarius_download_03081000_Dissolved oxygen.rds','1_fetch/out/aquarius_download_03081000_pH.rds')
+
+  2_process/out/summary_03081000_Temperature, water.rds:
+    command: summarize_joined_data(outfile = target_name,
+               joined_data_file = '2_process/out/joined_data_03081000_Temperature, water.rds')
+
+  2_process/out/dygraph_03081000_Temperature, water.html:
+    command: dygraph_edited_raw(outfile = target_name,
+               joined_data_file = '2_process/out/joined_data_03081000_Temperature, water.rds',
+      summary_file = '2_process/out/summary_03081000_Temperature, water.rds',
+      site_no = I('03081000'),
+      parameter = I('Temperature, water'))
 
   # --- Overall job --- #
 
   all_summaries_promise:
     command: combine_summaries(
-      '2_process/out/joined_data_01425000_Temperature, water.rds',
-      '2_process/out/summary_01425000_Temperature, water.rds',
-      '2_process/out/joined_data_01432160_Temperature, water.rds',
-      '2_process/out/summary_01432160_Temperature, water.rds')
+      '2_process/out/joined_data_01477050_Temperature, water.rds',
+      '2_process/out/summary_01477050_Temperature, water.rds',
+      '2_process/out/dygraph_01477050_Temperature, water.html',
+      '2_process/out/joined_data_01480617_Temperature, water.rds',
+      '2_process/out/summary_01480617_Temperature, water.rds',
+      '2_process/out/dygraph_01480617_Temperature, water.html',
+      '2_process/out/joined_data_01480870_Temperature, water.rds',
+      '2_process/out/summary_01480870_Temperature, water.rds',
+      '2_process/out/dygraph_01480870_Temperature, water.html',
+      '2_process/out/joined_data_01481000_Temperature, water.rds',
+      '2_process/out/summary_01481000_Temperature, water.rds',
+      '2_process/out/dygraph_01481000_Temperature, water.html',
+      '2_process/out/joined_data_03049640_Temperature, water.rds',
+      '2_process/out/summary_03049640_Temperature, water.rds',
+      '2_process/out/dygraph_03049640_Temperature, water.html',
+      '2_process/out/joined_data_03079000_Temperature, water.rds',
+      '2_process/out/summary_03079000_Temperature, water.rds',
+      '2_process/out/dygraph_03079000_Temperature, water.html',
+      '2_process/out/joined_data_03081000_Temperature, water.rds',
+      '2_process/out/summary_03081000_Temperature, water.rds',
+      '2_process/out/dygraph_03081000_Temperature, water.html')
     

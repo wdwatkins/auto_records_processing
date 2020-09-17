@@ -94,8 +94,30 @@ read_and_merge_files <- function(files, value_col_names, start_date) {
   return(all_files_df)
 }
 
+read_join_aquarius_rds <- function(aquarius_data_targets, param_to_predict) {
+  all_data <- tibble()
+  for(file in aquarius_data_targets) {
+    file_param <- str_split(file, pattern = '_', simplify = TRUE)[5] %>% 
+      tools::file_path_sans_ext()
+    file_data <- readRDS(file)
+    if(!grepl(pattern = param_to_predict, x = file)) {
+      file_data <- file_data %>% rename_with(.fn = ~ paste(file_param, .x, sep = '_'),
+                                             .cols = contains('value'))
+    }
+    #if else maybe needed
+    if(nrow(all_data) == 0) {
+      all_data <- file_data
+    } else {
+      all_data <- full_join(all_data, file_data, by = c('Timestamp', 'datetime_parsed'))
+    }
+  }
+  return(all_data)
+}
+
 read_bundle_join_data <- function(outfile, bundle_zip, site, timeseries_info, 
-                                  aquarius_data_file, col_to_trim) {
+                                  col_to_trim, aq_param_to_predict, ...) {
+  
+  aquarius_data_targets <- c(...)
   #identify file
   bundle_path <-tools::file_path_sans_ext(bundle_zip)
   formatted_adaps_dd <- paste0("dd", zeroPad(timeseries_info$adaps_dd, 3))
@@ -118,7 +140,8 @@ read_bundle_join_data <- function(outfile, bundle_zip, site, timeseries_info,
                                           start_date = as_datetime('2007-10-01 00:00:00', 
                                                                    tz = "America/New_York"))
   assert_that(!anyDuplicated(all_bundle_data$datetime_parsed))
-  aquarius_data <- readRDS(aquarius_data_file)
+  #TODO: read all aquarius data files, join
+  aquarius_data <- read_join_aquarius_rds(aquarius_data_targets, aq_param_to_predict)
   joined_adaps_aquarius <- full_join(all_bundle_data, aquarius_data,
                                      by = "datetime_parsed") %>% 
     select(datetime_parsed, contains('value', ignore.case = TRUE), everything()) %>% 
@@ -130,14 +153,16 @@ read_bundle_join_data <- function(outfile, bundle_zip, site, timeseries_info,
   unlink(x = files_to_read)
   saveRDS(joined_adaps_aquarius, file = outfile)
 }
+
 #' @param col_to_use will remove rows following the last non-NA value in this
 #' column (ordered by date)
 trim_post_adaps_data <- function(df, col_to_trim) {
+  df_ordered <- arrange(df, datetime_parsed)
   #based on edit value; may want to make 
-  max_non_na_index <- df %>% arrange(datetime_parsed) %>% 
+ max_non_na_index <- df_ordered %>% 
     pull(!!col_to_trim) %>% is.na() %>% not() %>% which() %>% 
-    tail(n = 1)
-  df %>% slice(1:max_non_na_index)
+    tail(n = 1) 
+  df_ordered %>% slice(1:max_non_na_index)
 }
 
 summarize_joined_data <- function(outfile, joined_data_file) {
@@ -161,18 +186,13 @@ pull_sites <- function(states, pcodes, sample_size) {
                                 parameterCd = pcodes,
                                 seriesCatalogOutput = TRUE,
                                 outputDataTypeCd = 'iv') %>% 
-      filter(parm_cd %in% pcodes,
-             begin_date <= '2007-10-01',
-             end_date >= '2017-10-01'
-             ) %>% 
-      group_by(site_no, parm_cd) %>% 
-      filter(n() == 1)
+    filter_to_4_param_sites()
       
     all_state_data <- bind_rows(all_state_data, state_sites)
   }
-  final_sample <- all_state_data %>% group_by(parm_cd) %>% 
-    slice_sample(n = sample_size)
-  return(final_sample)
+  unique_sites <- length(unique(all_state_data$site_no))
+  message(unique_sites, ' unique sites meet criteria')
+  return(all_state_data)
 }
 
 join_to_aq_param_names <- function(df, aq_file_name) {
@@ -191,10 +211,10 @@ get_site_sample <- function(states, pcodes, sample_size, aq_file_name) {
 }
 
 filter_to_4_param_sites <- function(site_service_output) {
-  state_4_param_sites <- state_sites %>% 
+  state_4_param_sites <- site_service_output %>% 
     filter(begin_date <= '2007-10-01',
            end_date >= '2017-10-01') %>% 
     group_by(site_no) %>% 
     filter('00010' %in% parm_cd,
-           n() >= 4) 
+           length(unique(parm_cd)) >= 4) 
 }

@@ -20,20 +20,50 @@ targets:
     depends:
       - bundle_inventory_promise
 
-  # --- 01425000 --- #
+  # --- 01477050 --- #
   
-  1_fetch/zip/bundle_01425000.zip:
-    command: get_bundle_trycatch(outfile = target_name, site = I('01425000'))
+  1_fetch/zip/bundle_01477050.zip:
+    command: get_bundle_trycatch(outfile = target_name, site = I('01477050'))
 
-  # --- 01432160 --- #
+  # --- 01480617 --- #
   
-  1_fetch/zip/bundle_01432160.zip:
-    command: get_bundle_trycatch(outfile = target_name, site = I('01432160'))
+  1_fetch/zip/bundle_01480617.zip:
+    command: get_bundle_trycatch(outfile = target_name, site = I('01480617'))
+
+  # --- 01480870 --- #
+  
+  1_fetch/zip/bundle_01480870.zip:
+    command: get_bundle_trycatch(outfile = target_name, site = I('01480870'))
+
+  # --- 01481000 --- #
+  
+  1_fetch/zip/bundle_01481000.zip:
+    command: get_bundle_trycatch(outfile = target_name, site = I('01481000'))
+
+  # --- 03049640 --- #
+  
+  1_fetch/zip/bundle_03049640.zip:
+    command: get_bundle_trycatch(outfile = target_name, site = I('03049640'))
+
+  # --- 03079000 --- #
+  
+  1_fetch/zip/bundle_03079000.zip:
+    command: get_bundle_trycatch(outfile = target_name, site = I('03079000'))
+
+  # --- 03081000 --- #
+  
+  1_fetch/zip/bundle_03081000.zip:
+    command: get_bundle_trycatch(outfile = target_name, site = I('03081000'))
 
   # --- Overall job --- #
 
   bundle_inventory_promise:
     command: get_bundle_inventory(
-      '1_fetch/zip/bundle_01425000.zip',
-      '1_fetch/zip/bundle_01432160.zip')
+      '1_fetch/zip/bundle_01477050.zip',
+      '1_fetch/zip/bundle_01480617.zip',
+      '1_fetch/zip/bundle_01480870.zip',
+      '1_fetch/zip/bundle_01481000.zip',
+      '1_fetch/zip/bundle_03049640.zip',
+      '1_fetch/zip/bundle_03079000.zip',
+      '1_fetch/zip/bundle_03081000.zip')
     

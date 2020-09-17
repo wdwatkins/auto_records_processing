@@ -9,17 +9,23 @@ packages:
  - htmlwidgets
  - xts
  
+target_default: joined_data_summary
+ 
 sources:
  - R/utilities.R
  - R/pipeline_functions.R
  
 targets:
-
+  
+  param_to_predict: 
+    command: c(I('00010'))
+  aq_param_to_predict: 
+    command: c(I('Temperature, water'))
+    
   sites_parameters:
-    command: get_site_sample(states = I(c('CA', 'PA')),
-                             pcodes = I(c('00010', '00065')),
-                             aq_file_name = I('pcode_translation.json'),
-                             sample_size = I(50))
+    command: get_site_sample(states = I(c('PA')),
+                             pcodes = param_to_predict,
+                             aq_file_name = I('pcode_translation.json'))
     
   data_bundles:
     command: download_data_bundles(sites_parameters, 'R/utilities.R', 'R/pipeline_functions.R')
@@ -33,5 +39,7 @@ targets:
     command: assemble_summarize_data_tasks(sites_parameters = sites_parameters, 
                                            aquarius_data = aquarius_raw_data,
                                            data_bundles = data_bundles,
+                                           param_to_predict = param_to_predict,
+                                           aq_param_to_predict = aq_param_to_predict,
                                            'R/utilities.R', 'R/pipeline_functions.R', 
                                            'R/summary_plots.R')

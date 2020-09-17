@@ -127,9 +127,11 @@ get_aq_inventory <- function(...) {
 }
 
 assemble_summarize_data_tasks <- function(sites_parameters, aquarius_data, data_bundles,
-                                          ...) {
-  task_names <- paste(sites_parameters$site_no, sites_parameters$parameter, sep = "_")
+                                          param_to_predict, aq_param_to_predict, ...) {
   
+  sites_parameters_to_predict <- sites_parameters %>% 
+    filter(parm_cd == param_to_predict)
+  task_names <- paste(sites_parameters_to_predict$site_no, sites_parameters_to_predict$parameter, sep = "_")
   read_bundle_join_data_step <- create_task_step(
     step_name = 'read_bundle_join_data',
     target_name = function(task_name, ...) {
@@ -140,11 +142,25 @@ assemble_summarize_data_tasks <- function(sites_parameters, aquarius_data, data_
       parameter <- strsplit(task_name, split = '_')[[1]][2]
       timeseries_id_target <- paste('timeseries_info', task_name, sep = "_")
       bundle_target <- sprintf('1_fetch/zip/bundle_%s.zip', site)
-      aquarius_data_target <- sprintf('1_fetch/out/aquarius_download_%s.rds', task_name)
+      #aquarius_data_target <- sprintf('1_fetch/out/aquarius_download_%s.rds', task_name)
+      #TODO: get all targets from aq download matching site number; pass in as vector
+      aq_download_targets <- remake::list_targets('1_aquarius_download.yml') %>% 
+        grep(pattern = '.rds', value = TRUE) %>% 
+        grep(pattern = site, value = TRUE) %>% 
+        paste0("'", ., "'") %>% 
+        paste(collapse = ',')
+      aq_param_to_predict <- remake::fetch('aq_param_to_predict')
+      
+      aq_ts_info_target <- remake::list_targets('1_aquarius_download.yml') %>% 
+        grep(pattern = 'timeseries_info', value = TRUE) %>% 
+        grep(pattern = site, value = TRUE) %>% 
+        grep(pattern = aq_param_to_predict, value = TRUE)
+      assert_that(length(aq_ts_info_target) == 1)
       psprintf("read_bundle_join_data(outfile = target_name, site = I('%s')," = site,
                                   "bundle = '%s'," = bundle_target,
-                                 "timeseries_info = `%s`," = timeseries_id_target,
-                                  "aquarius_data = '%s', col_to_trim = I('value_adaps_edit'))" = aquarius_data_target
+                                 "timeseries_info = `%s`," = aq_ts_info_target,
+                                  "col_to_trim = I('value_adaps_edit'),
+                                    aq_param_to_predict = aq_param_to_predict, %s)" = aq_download_targets
                )
     }
   )

@@ -39,6 +39,7 @@ dygraph_model_output <- function(outfile, split_data_file, model_output_file, mo
     rename(remove_point_bin = remove_point) %>% 
     bind_cols(model_output$test_predictions, split_data$test_dates) %>% 
     mutate(set = 'test')
+  
   full_timeseries_in_out <- bind_rows(train_full_in_out, test_full_in_out) %>% 
     mutate(model_remove_point = .pred_yes > model_eval_df$train_.threshold,
            remove_point_bin = as.logical(remove_point_bin),

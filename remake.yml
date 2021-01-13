@@ -18,11 +18,11 @@ sources:
  
 targets:
   
-  param_to_predict: 
-    command: c(I('00065'))
+  param_to_predict:
+    command: c(I('00010'))
   #inclusive bounds, applied during train/test set creation
   upper_bound:
-    command: c(I(Inf))
+    command: c(I(40))
   lower_bound: 
     command: c(I(0))
   aq_param_to_predict: 

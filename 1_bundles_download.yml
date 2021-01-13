@@ -55,6 +55,156 @@ targets:
   1_fetch/zip/bundle_03081000.zip:
     command: get_bundle_trycatch(outfile = target_name, site = I('03081000'))
 
+  # --- 02198840 --- #
+  
+  1_fetch/zip/bundle_02198840.zip:
+    command: get_bundle_trycatch(outfile = target_name, site = I('02198840'))
+
+  # --- 02198920 --- #
+  
+  1_fetch/zip/bundle_02198920.zip:
+    command: get_bundle_trycatch(outfile = target_name, site = I('02198920'))
+
+  # --- 021989773 --- #
+  
+  1_fetch/zip/bundle_021989773.zip:
+    command: get_bundle_trycatch(outfile = target_name, site = I('021989773'))
+
+  # --- 022035975 --- #
+  
+  1_fetch/zip/bundle_022035975.zip:
+    command: get_bundle_trycatch(outfile = target_name, site = I('022035975'))
+
+  # --- 02203603 --- #
+  
+  1_fetch/zip/bundle_02203603.zip:
+    command: get_bundle_trycatch(outfile = target_name, site = I('02203603'))
+
+  # --- 02203655 --- #
+  
+  1_fetch/zip/bundle_02203655.zip:
+    command: get_bundle_trycatch(outfile = target_name, site = I('02203655'))
+
+  # --- 02203700 --- #
+  
+  1_fetch/zip/bundle_02203700.zip:
+    command: get_bundle_trycatch(outfile = target_name, site = I('02203700'))
+
+  # --- 02207120 --- #
+  
+  1_fetch/zip/bundle_02207120.zip:
+    command: get_bundle_trycatch(outfile = target_name, site = I('02207120'))
+
+  # --- 02207185 --- #
+  
+  1_fetch/zip/bundle_02207185.zip:
+    command: get_bundle_trycatch(outfile = target_name, site = I('02207185'))
+
+  # --- 02207385 --- #
+  
+  1_fetch/zip/bundle_02207385.zip:
+    command: get_bundle_trycatch(outfile = target_name, site = I('02207385'))
+
+  # --- 02207400 --- #
+  
+  1_fetch/zip/bundle_02207400.zip:
+    command: get_bundle_trycatch(outfile = target_name, site = I('02207400'))
+
+  # --- 02208150 --- #
+  
+  1_fetch/zip/bundle_02208150.zip:
+    command: get_bundle_trycatch(outfile = target_name, site = I('02208150'))
+
+  # --- 02217274 --- #
+  
+  1_fetch/zip/bundle_02217274.zip:
+    command: get_bundle_trycatch(outfile = target_name, site = I('02217274'))
+
+  # --- 02218565 --- #
+  
+  1_fetch/zip/bundle_02218565.zip:
+    command: get_bundle_trycatch(outfile = target_name, site = I('02218565'))
+
+  # --- 02334578 --- #
+  
+  1_fetch/zip/bundle_02334578.zip:
+    command: get_bundle_trycatch(outfile = target_name, site = I('02334578'))
+
+  # --- 02334885 --- #
+  
+  1_fetch/zip/bundle_02334885.zip:
+    command: get_bundle_trycatch(outfile = target_name, site = I('02334885'))
+
+  # --- 02335000 --- #
+  
+  1_fetch/zip/bundle_02335000.zip:
+    command: get_bundle_trycatch(outfile = target_name, site = I('02335000'))
+
+  # --- 02335350 --- #
+  
+  1_fetch/zip/bundle_02335350.zip:
+    command: get_bundle_trycatch(outfile = target_name, site = I('02335350'))
+
+  # --- 02336000 --- #
+  
+  1_fetch/zip/bundle_02336000.zip:
+    command: get_bundle_trycatch(outfile = target_name, site = I('02336000'))
+
+  # --- 02336030 --- #
+  
+  1_fetch/zip/bundle_02336030.zip:
+    command: get_bundle_trycatch(outfile = target_name, site = I('02336030'))
+
+  # --- 02336120 --- #
+  
+  1_fetch/zip/bundle_02336120.zip:
+    command: get_bundle_trycatch(outfile = target_name, site = I('02336120'))
+
+  # --- 02336240 --- #
+  
+  1_fetch/zip/bundle_02336240.zip:
+    command: get_bundle_trycatch(outfile = target_name, site = I('02336240'))
+
+  # --- 02336300 --- #
+  
+  1_fetch/zip/bundle_02336300.zip:
+    command: get_bundle_trycatch(outfile = target_name, site = I('02336300'))
+
+  # --- 02336313 --- #
+  
+  1_fetch/zip/bundle_02336313.zip:
+    command: get_bundle_trycatch(outfile = target_name, site = I('02336313'))
+
+  # --- 02336360 --- #
+  
+  1_fetch/zip/bundle_02336360.zip:
+    command: get_bundle_trycatch(outfile = target_name, site = I('02336360'))
+
+  # --- 02336410 --- #
+  
+  1_fetch/zip/bundle_02336410.zip:
+    command: get_bundle_trycatch(outfile = target_name, site = I('02336410'))
+
+  # --- 02336526 --- #
+  
+  1_fetch/zip/bundle_02336526.zip:
+    command: get_bundle_trycatch(outfile = target_name, site = I('02336526'))
+
+  # --- 02336728 --- #
+  
+  1_fetch/zip/bundle_02336728.zip:
+    command: get_bundle_trycatch(outfile = target_name, site = I('02336728'))
+
+  # --- 02337170 --- #
+  
+  1_fetch/zip/bundle_02337170.zip:
+    command: get_bundle_trycatch(outfile = target_name, site = I('02337170'))
+
+  # --- 02337410 --- #
+  
+  1_fetch/zip/bundle_02337410.zip:
+    command: get_bundle_trycatch(outfile = target_name, site = I('02337410'))
+
   # --- Overall job --- #
 
   bundle_inventory_promise:
@@ -65,5 +215,35 @@ targets:
       '1_fetch/zip/bundle_01481000.zip',
       '1_fetch/zip/bundle_03049640.zip',
       '1_fetch/zip/bundle_03079000.zip',
-      '1_fetch/zip/bundle_03081000.zip')
+      '1_fetch/zip/bundle_03081000.zip',
+      '1_fetch/zip/bundle_02198840.zip',
+      '1_fetch/zip/bundle_02198920.zip',
+      '1_fetch/zip/bundle_021989773.zip',
+      '1_fetch/zip/bundle_022035975.zip',
+      '1_fetch/zip/bundle_02203603.zip',
+      '1_fetch/zip/bundle_02203655.zip',
+      '1_fetch/zip/bundle_02203700.zip',
+      '1_fetch/zip/bundle_02207120.zip',
+      '1_fetch/zip/bundle_02207185.zip',
+      '1_fetch/zip/bundle_02207385.zip',
+      '1_fetch/zip/bundle_02207400.zip',
+      '1_fetch/zip/bundle_02208150.zip',
+      '1_fetch/zip/bundle_02217274.zip',
+      '1_fetch/zip/bundle_02218565.zip',
+      '1_fetch/zip/bundle_02334578.zip',
+      '1_fetch/zip/bundle_02334885.zip',
+      '1_fetch/zip/bundle_02335000.zip',
+      '1_fetch/zip/bundle_02335350.zip',
+      '1_fetch/zip/bundle_02336000.zip',
+      '1_fetch/zip/bundle_02336030.zip',
+      '1_fetch/zip/bundle_02336120.zip',
+      '1_fetch/zip/bundle_02336240.zip',
+      '1_fetch/zip/bundle_02336300.zip',
+      '1_fetch/zip/bundle_02336313.zip',
+      '1_fetch/zip/bundle_02336360.zip',
+      '1_fetch/zip/bundle_02336410.zip',
+      '1_fetch/zip/bundle_02336526.zip',
+      '1_fetch/zip/bundle_02336728.zip',
+      '1_fetch/zip/bundle_02337170.zip',
+      '1_fetch/zip/bundle_02337410.zip')
     

@@ -211,9 +211,12 @@ get_site_sample <- function(states, pcodes, sample_size, aq_file_name) {
 }
 
 filter_to_4_param_sites <- function(site_service_output) {
+  sites_to_skip <- c('02334480') #no data from bundle?  was all NAs
   state_4_param_sites <- site_service_output %>% 
     filter(begin_date <= '2007-10-01',
-           end_date >= '2017-10-01') %>% 
+           end_date >= '2017-10-01',
+           parm_cd != '00045',
+           !site_no %in% sites_to_skip) %>% 
     group_by(site_no) %>% 
     filter('00010' %in% parm_cd,
            length(unique(parm_cd)) >= 4) 

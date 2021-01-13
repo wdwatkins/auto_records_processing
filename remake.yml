@@ -8,6 +8,7 @@ packages:
  - dygraphs
  - htmlwidgets
  - xts
+ - gridExtra
  
 target_default: joined_data_summary
  
@@ -18,12 +19,17 @@ sources:
 targets:
   
   param_to_predict: 
-    command: c(I('00010'))
+    command: c(I('00065'))
+  #inclusive bounds, applied during train/test set creation
+  upper_bound:
+    command: c(I(Inf))
+  lower_bound: 
+    command: c(I(0))
   aq_param_to_predict: 
-    command: c(I('Temperature, water'))
+    command: c(I('Gage height'))
     
   sites_parameters:
-    command: get_site_sample(states = I(c('PA')),
+    command: get_site_sample(states = I(c('PA','GA')),
                              pcodes = param_to_predict,
                              aq_file_name = I('pcode_translation.json'))
     
@@ -43,3 +49,9 @@ targets:
                                            aq_param_to_predict = aq_param_to_predict,
                                            'R/utilities.R', 'R/pipeline_functions.R', 
                                            'R/summary_plots.R')
+  model_inventory:
+    command: do_model_tasks(joined_data_summary = joined_data_summary,
+                         split_method = I('test_future'), 
+                         lower_bound_include = lower_bound,
+                         upper_bound_include = upper_bound,
+                         'R/models.R')

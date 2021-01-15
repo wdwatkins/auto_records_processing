@@ -18,7 +18,7 @@ sources:
  
 targets:
   
-  param_to_predict: 
+  param_to_predict:
     command: c(I('00010'))
   #inclusive bounds, applied during train/test set creation
   upper_bound:
@@ -26,7 +26,7 @@ targets:
   lower_bound: 
     command: c(I(0))
   aq_param_to_predict: 
-    command: c(I('Temperature, water'))
+    command: c(I('Gage height'))
     
   sites_parameters:
     command: get_site_sample(states = I(c('PA','GA')),

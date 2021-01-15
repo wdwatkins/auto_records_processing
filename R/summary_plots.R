@@ -58,8 +58,12 @@ dygraph_model_output <- function(outfile, split_data_file, model_output_file, mo
   plot_title <- sprintf("%s %s %s training f1 = %0.2f test f1 = %0.2f", 
                         site_name, model_eval_df$site, model_eval_df$param_predicted, model_eval_df$train_f1, model_eval_df$test_f1)
   dygraph_cols <- full_timeseries_in_out %>% 
+    verify_cols(cols = c('false negative' = NA, 
+                         'true positive' = NA, 
+                         'false positive' = NA)) %>% 
     select(datetime_parsed, aq_raw_value, contains('raw_value_'), contains('false'), `true positive`) %>% 
     mutate(across(matches('negative|positive'), .fns = ~if_else(condition = .x, true = aq_raw_value, false = NA_real_))) 
+
   dygraph_to_plot <- xts(dygraph_cols[,-1], 
                          order.by = dygraph_cols$datetime_parsed)
   first_date <- min(dygraph_cols$datetime_parsed)
@@ -67,13 +71,24 @@ dygraph_model_output <- function(outfile, split_data_file, model_output_file, mo
   dy_obj <- dygraph(dygraph_to_plot, xlab = "Date", ylab = model_eval_df$param_predicted,
                     main = plot_title) %>%  
     dySeries(name = 'aq_raw_value', label = 'true negative', color = 'green') %>% 
-    dySeries(name = 'false positive', color = 'red', pointShape = 'dot', drawPoints = TRUE, pointSize = 1, strokeWidth = 0) %>%
-    dySeries(name = 'true positive', color = 'blue', drawPoints = TRUE, pointShape = 'ex', pointSize = 3, strokeWidth = 0) %>% 
-    dySeries(name = 'false negative', color = 'red', drawPoints = TRUE, pointShape = 'ex', pointSize = 3, strokeWidth = 0) %>%
+    dySeries(name = 'false positive', color = 'red', pointShape = 'dot', drawPoints = TRUE, pointSize = 4, strokeWidth = 0) %>%
+    dySeries(name = 'true positive', color = 'blue', drawPoints = TRUE, pointShape = 'ex', pointSize = 4, strokeWidth = 0) %>% 
+    dySeries(name = 'false negative', color = 'red', drawPoints = TRUE, pointShape = 'ex', pointSize = 4, strokeWidth = 0) %>%
     dyUnzoom() %>% dyRangeSelector() %>%  dyLegend(show='always', width = 150, labelsSeparateLines = TRUE) %>% 
     dyAnnotation(attachAtBottom = TRUE, x = last_train_date, text = 'X = labeled anomaly', width = 150) %>% 
     dyShading(from = first_date, to = last_train_date) %>% 
     dyAnnotation(attachAtBottom = TRUE, x = first_date + years(1), text = 'Shaded = training', width = 130)
   outfile_absolute <- file.path(getwd(), outfile) #due to bug in saveWidget
   saveWidget(widget = dy_obj, file = outfile_absolute)
+}
+
+#' add columns if needed to dySeries doesn't error
+#' @param df data frame to check for columns
+#' @param cols named vector of column name/types (generally a NA logical)
+verify_cols <- function(df, cols){
+  missing_cols <- cols[!names(cols) %in% names(df)]
+  if(length(missing_cols) > 0) {
+    df <- df %>% add_column(!!!missing_cols)
+  }
+  return(df)
 }

@@ -146,7 +146,6 @@ log_reg_roc_curve <- function(outfile, model_output_file) {
     train_pr_plot <- pr_curve(model_output$train_predictions, remove_point, .pred_yes) %>%   
       ggplot(aes(x = recall, y = precision)) +
       geom_path() +
-      geom_abline(lty = 3) +
       coord_equal() +
       theme_bw() +
       ggtitle('Training data precision-recall curve')
@@ -165,7 +164,6 @@ log_reg_roc_curve <- function(outfile, model_output_file) {
     test_pr_plot <- pr_curve(model_output$test_predictions, remove_point, .pred_yes) %>%   
       ggplot(aes(x = recall, y = precision)) +
       geom_path() +
-      geom_abline(lty = 3) +
       coord_equal() +
       theme_bw() +
       ggtitle('Test data precision-recall curve')
